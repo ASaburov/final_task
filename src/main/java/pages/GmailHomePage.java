@@ -13,7 +13,7 @@ public class GmailHomePage extends Page {
     private static final By PASSWORD_INPUT = By.xpath("//input[@type='password']");
     private static final By PASSWORD_NEXT_BUTTON = By.id("passwordNext");
     private static final By PROFILE_IDENTIFIER = By.xpath("//div[@id='profileIdentifier']");
-    private static final By CHANGE_ACCOUNT_BUTTON = By.cssSelector("div [jsname=\"rwl3qc\"]");
+    private static final By CHANGE_ACCOUNT_BUTTON = By.cssSelector("div[jsname='rwl3qc']");
 
     public GmailHomePage() {
         PageFactory.initElements(driver, this);

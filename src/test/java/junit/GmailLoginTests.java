@@ -8,7 +8,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
-import org.openqa.selenium.WebElement;
 import pages.GmailHomePage;
 import pages.GmailInboxPage;
 
@@ -55,14 +54,24 @@ public class GmailLoginTests {
     }
 
     @Test
-    public void sendEmailTest(){
+    public void sendEmailTestAndCheckInboxOfReceiver(){
         gmailInboxPage = gmailHomePage.login("seleniumtests10@gmail.com", "060788avavav");
         gmailInboxPage = gmailInboxPage.sendLetter("seleniumtests30@gmail.com", "theme", "email_body");
         gmailHomePage = gmailInboxPage.logOut();
         gmailHomePage.clickButtonsToChangeAccount();
         gmailInboxPage = gmailHomePage.login("seleniumtests30@gmail.com", "060788avavav");
-        assertEquals("seleniumtests10@gmail.com", gmailInboxPage.getEmailOfTheFirstLetter());
+        assertEquals("seleniumtests10@gmail.com", gmailInboxPage.getSenderEmailFromOpenedLetter());
     }
+
+    @Test
+    public void sendEmailAndCheckSentBoxOfSender(){
+        gmailInboxPage = gmailHomePage.login("seleniumtests10@gmail.com", "060788avavav");
+        gmailInboxPage = gmailInboxPage.sendLetter("seleniumtests30@gmail.com", "theme", "email_body");
+        assertEquals("seleniumtests30@gmail.com", gmailInboxPage.getEmailOfLastSentLetter());
+
+    }
+
+
 
 }
 

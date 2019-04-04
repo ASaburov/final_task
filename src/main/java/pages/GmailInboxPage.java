@@ -15,25 +15,25 @@ public class GmailInboxPage extends Page {
     private static final By SUBJECT_TEXTAREA = By.cssSelector("input[name='subjectbox']");
     private static final By EMAIL_BODY_INPUT = By.cssSelector("div[class*='editable']");
     private static final By SEND_BUTTON = By.cssSelector("div [aria-label*='Enter']");
-    private static final By LAST_LETTER = By.cssSelector("[class='yW'] span:first-of-type");
-    private static final By OPENED_LETTER_EMAIL_AND_OTHER_DATA = By.cssSelector("td h3 span[email][name]");
-
+    private static final By LAST_EMAIL = By.cssSelector("[class='yW'] span:first-of-type");
+    private static final By SENDER_DATA_OF_OPENED_EMAIL = By.cssSelector("td h3 span[email][name]");
+    private static final By RECEIVER_DATA_OF_OPENED_EMAIL = By.cssSelector("span.hb span[email][name]");
+    private static final By LAST_SENT_EMAIL = By.cssSelector("div[gh='tl'] tr.zA:first-child td:nth-of-type(6)"); //need to change selector!
 
     public GmailInboxPage() {
         PageFactory.initElements(driver, this);
     }
 
-    public String getEmailOfTheFirstLetter() {
-        this.driver.findElement(LAST_LETTER).click();
-        String email = this.driver.findElement(OPENED_LETTER_EMAIL_AND_OTHER_DATA).getAttribute("email");
-        System.out.println(email);
-        return email;
+    public String getEmailOfTheLastInboxLetter() {
+        this.driver.findElement(LAST_EMAIL).click();
+
+        return this.getSenderEmailFromOpenedLetter();
 
     }
 
     public GmailInboxPage sendLetter(String email, String theme, String body) {
         this.driver.findElement(CREATE_EMAIL_BUTTON).click();
-        new CustomWaiter().waitUntilElementIsClickable(20, TO_TEXTAREA, Driver.getInstance().getWebDriver());
+        new CustomWaiter().waitUntilElementIsClickable(15, TO_TEXTAREA, Driver.getInstance().getWebDriver());
         this.driver.findElement(TO_TEXTAREA).click();
         this.driver.findElement(TO_TEXTAREA).sendKeys(email);
         this.driver.findElement(SUBJECT_TEXTAREA).sendKeys(theme);
@@ -56,5 +56,25 @@ public class GmailInboxPage extends Page {
         return this.driver.findElement(SIGN_OUT_BUTTON).isEnabled();
     }
 
+    public String getEmailOfLastSentLetter() {
+        this.driver.get("https://mail.google.com/mail/u/1/#sent");
+        new CustomWaiter().waitUntilElementIsClickable(20, LAST_SENT_EMAIL, this.driver);
+        return this.getReceiverEmailFromOpenedLetter();
+
+    }
+
+    //method that helps to get 'email' attribute related to sender of the opened email
+    public String getSenderEmailFromOpenedLetter() {
+        this.driver.findElement(LAST_SENT_EMAIL).click();
+        new CustomWaiter().waitUntilElementIsClickable(20, SENDER_DATA_OF_OPENED_EMAIL, Driver.getInstance().getWebDriver());
+        return this.driver.findElement(SENDER_DATA_OF_OPENED_EMAIL).getAttribute("email");
+    }
+
+    //method that helps to get 'email' attribute related to receiver of the opened email
+    public String getReceiverEmailFromOpenedLetter() {
+        this.driver.findElement(LAST_SENT_EMAIL).click();
+        //new CustomWaiter().waitUntilElementIsClickable(20, RECEIVER_DATA_OF_OPENED_EMAIL, Driver.getInstance().getWebDriver());
+        return this.driver.findElement(RECEIVER_DATA_OF_OPENED_EMAIL).getAttribute("email");
+    }
 
 }
