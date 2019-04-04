@@ -1,9 +1,9 @@
 package pages;
 
+import driver.Driver;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import util.CustomWaiter;
 
 
 public class GmailHomePage extends Page {
@@ -12,26 +12,36 @@ public class GmailHomePage extends Page {
     private static final By LOGIN_NEXT_BUTTON = By.id("identifierNext");
     private static final By PASSWORD_INPUT = By.xpath("//input[@type='password']");
     private static final By PASSWORD_NEXT_BUTTON = By.id("passwordNext");
-    private static final String TITLE = "Gmail";
+    private static final By PROFILE_IDENTIFIER = By.xpath("//div[@id='profileIdentifier']");
+    private static final By CHANGE_ACCOUNT_BUTTON = By.cssSelector("div [jsname=\"rwl3qc\"]");
 
     public GmailHomePage() {
-        super(TITLE);
         PageFactory.initElements(driver, this);
     }
 
 
-    public void login(String login, String password) {
+    public GmailInboxPage login(String login, String password) {
+        new CustomWaiter().waitUntilElementIsClickable(15, LOGIN_INPUT, Driver.getInstance().getWebDriver());
         this.driver.findElement(LOGIN_INPUT).sendKeys(login);
+        new CustomWaiter().waitUntilElementIsClickable(15, LOGIN_NEXT_BUTTON, Driver.getInstance().getWebDriver());
         this.driver.findElement(LOGIN_NEXT_BUTTON).click();
-        explicitlyWaitUntilElementIsClickable(4, PASSWORD_INPUT);
+        (new CustomWaiter()).waitUntilElementIsClickable(15, PASSWORD_INPUT, Driver.getInstance().getWebDriver());
         this.driver.findElement(PASSWORD_INPUT).sendKeys(password);
         this.driver.findElement(PASSWORD_NEXT_BUTTON).click();
+
+        return new GmailInboxPage();
     }
 
-    //method waits until the element is clickable
-    private void explicitlyWaitUntilElementIsClickable(int timeOutSeconds, By elementLocator){
-        WebDriverWait wait;
-        wait = new WebDriverWait(this.driver, timeOutSeconds);
-        wait.until(ExpectedConditions.elementToBeClickable(elementLocator));
+    public boolean isPasswordInputEnabled(){
+        return this.driver.findElement(PASSWORD_INPUT).isEnabled();
     }
+
+    public void clickButtonsToChangeAccount(){
+        new CustomWaiter().waitUntilElementIsClickable(15, PROFILE_IDENTIFIER, Driver.getInstance().getWebDriver());
+        this.driver.findElement(PROFILE_IDENTIFIER).click();
+        new CustomWaiter().waitUntilElementIsClickable(15, CHANGE_ACCOUNT_BUTTON, Driver.getInstance().getWebDriver());
+        this.driver.findElement(CHANGE_ACCOUNT_BUTTON).click();
+    }
+
+
 }

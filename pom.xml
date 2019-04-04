@@ -10,8 +10,6 @@
 
     <properties>
         <junit.jupiter.version>5.4.0</junit.jupiter.version>
-        <selenium.version>3.5.3</selenium.version>
-        <junit.jupiter.version>5.4.0</junit.jupiter.version>
         <junit.platform.version>1.4.1</junit.platform.version>
         <selenium.version>3.5.3</selenium.version>
         <allure.version>2.10.0</allure.version>
@@ -38,6 +36,12 @@
             <groupId>io.qameta.allure</groupId>
             <artifactId>allure-junit5</artifactId>
             <version>[${allure.version}]</version>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-params</artifactId>
+            <version>${junit.jupiter.version}</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
     <build>

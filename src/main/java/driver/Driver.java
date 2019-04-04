@@ -32,7 +32,7 @@ public class Driver {
     public WebDriver getWebDriver() {
         if (THREAD_LOCAL_WEBDRIVER.get() == null) {
             WebDriver d = new FirefoxDriver();
-            //d.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+            d.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
             d.manage().window().maximize();
 
             THREAD_LOCAL_WEBDRIVER.set(d);

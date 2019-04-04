@@ -4,17 +4,11 @@ import driver.Driver;
 import org.openqa.selenium.WebDriver;
 
 
-public class Page {
-
-    private final String TITLE;
+public abstract class Page {
     WebDriver driver;
 
-    Page(String title) {
-        TITLE = title;
+    Page() {
         driver = Driver.getInstance().getWebDriver();
     }
 
-    public boolean isDisplayed() {
-        return driver.getTitle().contentEquals(TITLE);
-    }
 }
