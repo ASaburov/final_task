@@ -19,23 +19,28 @@ public class GmailInboxPage extends Page {
     private static final By SENDER_DATA_OF_OPENED_EMAIL = By.cssSelector("td h3 span[email][name]");
     private static final By RECEIVER_DATA_OF_OPENED_EMAIL = By.cssSelector("span.hb span[email][name]");
     private static final By LAST_SENT_EMAIL = By.cssSelector("div[gh='tl'] tr.zA:first-child td:nth-of-type(6)"); //need to change selector!
+    /*private static final By SUCCESS_POPUP = By.cssSelector("div.vh span.aT");
+    private static final By DRAFT_SAVED_MESSAGE = By.cssSelector("div.aYF");*/
 
     public GmailInboxPage() {
         PageFactory.initElements(driver, this);
     }
 
     public String getEmailOfTheLastInboxLetter() {
-        this.driver.findElement(LAST_EMAIL).click();
+        this.driver.get("https://mail.google.com/mail/u/1/#inbox");
+        new CustomWaiter().waitUntilElementIsClickable(20, LAST_SENT_EMAIL, this.driver);
+        this.driver.findElement(LAST_SENT_EMAIL).click();
 
-        return this.getSenderEmailFromOpenedLetter();
+        return this.getEmailFromOpenedLetter("s");
 
     }
 
     public GmailInboxPage sendLetter(String email, String theme, String body) {
         this.driver.findElement(CREATE_EMAIL_BUTTON).click();
-        new CustomWaiter().waitUntilElementIsClickable(15, TO_TEXTAREA, Driver.getInstance().getWebDriver());
+        new CustomWaiter().waitUntilElementIsClickable(4, TO_TEXTAREA, Driver.getInstance().getWebDriver());
         this.driver.findElement(TO_TEXTAREA).click();
         this.driver.findElement(TO_TEXTAREA).sendKeys(email);
+        new CustomWaiter().waitUntilElementIsClickable(4, SUBJECT_TEXTAREA, Driver.getInstance().getWebDriver());
         this.driver.findElement(SUBJECT_TEXTAREA).sendKeys(theme);
         this.driver.findElement(EMAIL_BODY_INPUT).click();
         this.driver.findElement(EMAIL_BODY_INPUT).sendKeys(body);
@@ -48,7 +53,6 @@ public class GmailInboxPage extends Page {
         this.driver.findElement(USER_ACCOUNT_BUTTON).click();
         this.driver.findElement(SIGN_OUT_BUTTON).click();
 
-
         return new GmailHomePage();
     }
 
@@ -56,25 +60,29 @@ public class GmailInboxPage extends Page {
         return this.driver.findElement(SIGN_OUT_BUTTON).isEnabled();
     }
 
+    //this method goes to the Sent box,
     public String getEmailOfLastSentLetter() {
         this.driver.get("https://mail.google.com/mail/u/1/#sent");
         new CustomWaiter().waitUntilElementIsClickable(20, LAST_SENT_EMAIL, this.driver);
-        return this.getReceiverEmailFromOpenedLetter();
-
-    }
-
-    //method that helps to get 'email' attribute related to sender of the opened email
-    public String getSenderEmailFromOpenedLetter() {
         this.driver.findElement(LAST_SENT_EMAIL).click();
-        new CustomWaiter().waitUntilElementIsClickable(20, SENDER_DATA_OF_OPENED_EMAIL, Driver.getInstance().getWebDriver());
-        return this.driver.findElement(SENDER_DATA_OF_OPENED_EMAIL).getAttribute("email");
+
+        return this.getEmailFromOpenedLetter("r");
+
     }
 
-    //method that helps to get 'email' attribute related to receiver of the opened email
-    public String getReceiverEmailFromOpenedLetter() {
-        this.driver.findElement(LAST_SENT_EMAIL).click();
-        //new CustomWaiter().waitUntilElementIsClickable(20, RECEIVER_DATA_OF_OPENED_EMAIL, Driver.getInstance().getWebDriver());
-        return this.driver.findElement(RECEIVER_DATA_OF_OPENED_EMAIL).getAttribute("email");
-    }
+    public String getEmailFromOpenedLetter(String whoseEmail) {
+        String email = "";
 
+        switch (whoseEmail) {
+            case "s":
+                new CustomWaiter().waitUntilElementIsClickable(20, SENDER_DATA_OF_OPENED_EMAIL, Driver.getInstance().getWebDriver());
+                email = this.driver.findElement(SENDER_DATA_OF_OPENED_EMAIL).getAttribute("email");
+                break;
+            case "r":
+                new CustomWaiter().waitUntilElementIsClickable(20, RECEIVER_DATA_OF_OPENED_EMAIL, Driver.getInstance().getWebDriver());
+                email = this.driver.findElement(RECEIVER_DATA_OF_OPENED_EMAIL).getAttribute("email");
+                break;
+        }
+        return email;
+    }
 }

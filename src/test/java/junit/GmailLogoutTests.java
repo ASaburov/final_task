@@ -12,14 +12,11 @@ import pages.GmailInboxPage;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-
-public class GmailLoginTests {
+public class GmailLogoutTests {
 
     private static final String CSV_FILE_PATH = "/login_data.csv";
     private GmailHomePage gmailHomePage = new GmailHomePage();
     private GmailInboxPage gmailInboxPage;
-
-
 
 
     @BeforeEach
@@ -33,22 +30,14 @@ public class GmailLoginTests {
         Driver.getInstance().closeDriver();
     }
 
-    //test logs in the app and check whether username appeared in the corresponding field
-    @Feature("Login")
-    @Description("Verify the ability to log in")
+    //test logs in the app, then logs out and check that title is correct
+    @Feature("Logout")
+    @Description("Verify the ability to log out")
     @ParameterizedTest
     @CsvFileSource(resources = CSV_FILE_PATH)
-    public void loginProcessTest(String login, String password) {
+    public void logOutProcessTest(String login, String password) throws InterruptedException {
         gmailInboxPage = gmailHomePage.login(login + "@gmail.com", password);
-        assertTrue(gmailInboxPage.isSignOutButtonEnabled());
+        gmailHomePage = gmailInboxPage.logOut();
+        assertTrue(gmailHomePage.isPasswordInputEnabled());
     }
-
-
-
-
-
-
-
 }
-
-

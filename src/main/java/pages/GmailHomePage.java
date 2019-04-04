@@ -39,7 +39,7 @@ public class GmailHomePage extends Page {
     public void clickButtonsToChangeAccount(){
         new CustomWaiter().waitUntilElementIsClickable(15, PROFILE_IDENTIFIER, Driver.getInstance().getWebDriver());
         this.driver.findElement(PROFILE_IDENTIFIER).click();
-        new CustomWaiter().waitUntilElementIsClickable(15, CHANGE_ACCOUNT_BUTTON, Driver.getInstance().getWebDriver());
+        new CustomWaiter().waitUntilElemenIsDisplayed(15, CHANGE_ACCOUNT_BUTTON, Driver.getInstance().getWebDriver());
         this.driver.findElement(CHANGE_ACCOUNT_BUTTON).click();
     }
 
