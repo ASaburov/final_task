@@ -3,6 +3,7 @@ package pages;
 import driver.Driver;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import util.CustomWaiter;
 
 
@@ -21,11 +22,10 @@ public class GmailHomePage extends Page {
 
 
     public GmailInboxPage login(String login, String password) {
-        new CustomWaiter().waitUntilElementIsClickable(15, LOGIN_INPUT, Driver.getInstance().getWebDriver());
         this.driver.findElement(LOGIN_INPUT).sendKeys(login);
-        new CustomWaiter().waitUntilElementIsClickable(15, LOGIN_NEXT_BUTTON, Driver.getInstance().getWebDriver());
+        CustomWaiter.getWebDriverWait().until(ExpectedConditions.elementToBeClickable(LOGIN_NEXT_BUTTON));
         this.driver.findElement(LOGIN_NEXT_BUTTON).click();
-        (new CustomWaiter()).waitUntilElementIsClickable(15, PASSWORD_INPUT, Driver.getInstance().getWebDriver());
+        CustomWaiter.getWebDriverWait().until(ExpectedConditions.elementToBeClickable(PASSWORD_INPUT));
         this.driver.findElement(PASSWORD_INPUT).sendKeys(password);
         this.driver.findElement(PASSWORD_NEXT_BUTTON).click();
 
@@ -37,9 +37,9 @@ public class GmailHomePage extends Page {
     }
 
     public void clickButtonsToChangeAccount(){
-        new CustomWaiter().waitUntilElementIsClickable(15, PROFILE_IDENTIFIER, Driver.getInstance().getWebDriver());
+        CustomWaiter.getWebDriverWait().until(ExpectedConditions.elementToBeClickable(PROFILE_IDENTIFIER));
         this.driver.findElement(PROFILE_IDENTIFIER).click();
-        new CustomWaiter().waitUntilElemenIsDisplayed(15, CHANGE_ACCOUNT_BUTTON, Driver.getInstance().getWebDriver());
+        CustomWaiter.getWebDriverWait().until(ExpectedConditions.elementToBeClickable(CHANGE_ACCOUNT_BUTTON));
         this.driver.findElement(CHANGE_ACCOUNT_BUTTON).click();
     }
 
