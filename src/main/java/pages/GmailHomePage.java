@@ -32,16 +32,14 @@ public class GmailHomePage extends Page {
         return new GmailInboxPage();
     }
 
-    public boolean isPasswordInputEnabled(){
+    public boolean isPasswordInputEnabled() {
         return this.driver.findElement(PASSWORD_INPUT).isEnabled();
     }
 
-    public void clickButtonsToChangeAccount(){
+    public void clickButtonsToChangeAccount() {
         CustomWaiter.getWebDriverWait().until(ExpectedConditions.elementToBeClickable(PROFILE_IDENTIFIER));
         this.driver.findElement(PROFILE_IDENTIFIER).click();
         CustomWaiter.getWebDriverWait().until(ExpectedConditions.elementToBeClickable(CHANGE_ACCOUNT_BUTTON));
         this.driver.findElement(CHANGE_ACCOUNT_BUTTON).click();
     }
-
-
 }

@@ -1,9 +1,9 @@
 package driver;
 
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
+import stategy.SetupGridDriver;
+import stategy.SetupLocalDriver;
 
-import java.util.concurrent.TimeUnit;
 
 public class Driver {
     private static final String HOME_URL = "https://gmail.com";
@@ -30,12 +30,23 @@ public class Driver {
     }
 
     public WebDriver getWebDriver() {
+        System.setProperty("driver_type", "local");
+        String driverType = System.getProperty("driver_type");
         if (THREAD_LOCAL_WEBDRIVER.get() == null) {
-            WebDriver d = new FirefoxDriver();
-            d.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-            d.manage().window().maximize();
+            WebDriver driver = null;
+            switch (driverType) {
+                case "local":
+                    SetupLocalDriver localDriver = new SetupLocalDriver();
+                    driver = localDriver.setup();
+                    break;
+                case "remote_grid":
+                    SetupGridDriver remoteDriver = new SetupGridDriver();
+                    driver = remoteDriver.setup();
+                    break;
+                default:
+            }
 
-            THREAD_LOCAL_WEBDRIVER.set(d);
+            THREAD_LOCAL_WEBDRIVER.set(driver);
         }
 
         return THREAD_LOCAL_WEBDRIVER.get();

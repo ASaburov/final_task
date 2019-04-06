@@ -1,13 +1,10 @@
 package pages;
 
-import driver.Driver;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import util.CustomWaiter;
 
 import java.awt.*;
@@ -25,7 +22,7 @@ public class GmailInboxPage extends Page {
     private static final By SEND_BUTTON = By.cssSelector("div [aria-label*='Enter']");
     private static final By SENDER_DATA_OF_OPENED_EMAIL = By.cssSelector("td h3 span[email][name]");
     private static final By RECEIVER_DATA_OF_OPENED_EMAIL = By.cssSelector("span.hb span[email][name]");
-    private static final By LAST_EMAIL = By.cssSelector("div[gh='tl'] tr.zA:first-child td:nth-of-type(6)"); //need to change selector!
+    private static final By LAST_EMAIL = By.cssSelector("div[gh='tl'] tr.zA:first-child td:nth-of-type(6)");
     private static final By TRASH_LETTERS_QTY = By.xpath("//div[@class=\"D E G-atb\" and not(contains(@style,'display'))]//span[@class='Dj']/span[2]");
     private static final By REMOVE_SEARCH_REQUEST_BUTTON = By.xpath("//form[@id=\"aso_search_form_anchor\"]//button[not(contains(@gh, \"sda\"))][2]");
     private static final By SUCCESSFULLY_SENT_EMAIL_POPUP = By.cssSelector("div.vh span");
@@ -51,8 +48,6 @@ public class GmailInboxPage extends Page {
         this.driver.findElement(EMAIL_BODY_INPUT).sendKeys(body);
         this.driver.findElement(SEND_BUTTON).click();
         CustomWaiter.getWebDriverWait().until(ExpectedConditions.visibilityOfElementLocated(SUCCESSFULLY_SENT_EMAIL_POPUP));
-        // CustomWaiter.getWebDriverWait().until(ExpectedConditions.invisibilityOfElementLocated(SUCCESSFULLY_SENT_EMAIL_POPUP));
-
 
         return this;
     }
