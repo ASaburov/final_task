@@ -30,7 +30,6 @@ public class Driver {
     }
 
     public WebDriver getWebDriver() {
-        System.setProperty("driver_type", "local");
         String driverType = System.getProperty("driver_type");
         if (THREAD_LOCAL_WEBDRIVER.get() == null) {
             WebDriver driver = null;
